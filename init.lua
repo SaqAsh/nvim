@@ -12,6 +12,7 @@ end
 -- 2. Global options
 vim.g.mapleader = ' '
 vim.opt.clipboard = "unnamedplus"
+vim.o.termguicolors  = true
 vim.o.number         = true
 vim.o.relativenumber = true
 vim.o.expandtab      = true
@@ -109,7 +110,13 @@ setup_if_exists('mason-lspconfig', function(mlsp)
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
   local servers = { 'clangd', 'jdtls', 'html', 'cssls', 'jsonls', 'pyright' }
   for _, server in ipairs(servers) do
-    pcall(function() require('lspconfig')[server].setup { capabilities = capabilities } end)
+    pcall(function()
+      vim.lsp.config(server, {
+        capabilities = capabilities,
+        root_markers = { '.git' },
+      })
+      vim.lsp.enable(server)
+    end)
   end
 end)
 
@@ -273,6 +280,7 @@ end)
 setup_if_exists('typescript', function(typescript)
   typescript.setup({
     server = {
+      name = 'ts_ls',
       capabilities = require('cmp_nvim_lsp').default_capabilities(),
       on_attach = function(client, bufnr)
         vim.keymap.set('n', '<leader>oi', ':TypescriptOrganizeImports<CR>', { buffer = bufnr, desc = 'Organize Imports' })

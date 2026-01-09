@@ -1,0 +1,19 @@
+# Packer compiled file
+plugin/packer_compiled.lua
+
+# Lazy.nvim
+lazy-lock.json
+
+# Mason
+mason/
+
+# Swap/backup files
+*.swp
+*.swo
+*.swn
+*~
+.*.sw*
+
+# OS files
+.DS_Store
+Thumbs.db
